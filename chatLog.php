@@ -19,12 +19,12 @@ $bdd = new PDO('mysql:host=localhost;dbname=chatPHP;charset=utf8', 'root', 'root
 	for ($i=0; $i < $length-1; $i++) {	
 		echo('<p>');
 		echo('date : '.$sql_data[$i]['date'].'<br>');
-		echo('message : '.$sql_data[$i]['content']);
+		echo($sql_data[$i]['nom'].' : '.$sql_data[$i]['content']);
 		echo('</p>');
 	}
 		echo('<p id="lastReceived">');
 		echo('date : '.$sql_data[$length-1]['date'].'<br>');
-		echo('message : '.$sql_data[$length-1]['content']);
+		echo($sql_data[$i]['nom'].' : '.$sql_data[$length-1]['content']);
 		echo('</p>');
 
 ?>

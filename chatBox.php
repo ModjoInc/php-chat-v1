@@ -10,10 +10,10 @@ function invitLog(){
 		</form><br>
 		or Sign Up
 		<form method="post">
-			<input type="name" placeholder="name">
+			<input type="name" name="name" placeholder="name">
 			<input type="email" name="email" placeholder="email">
-			<input type="password" name="password" value="" placeholder="password">
-			<input type="password" name="password" value="" placeholder="password">
+			<input type="password" name="password1" value="" placeholder="password">
+			<input type="password" name="password2" value="" placeholder="password">
 			<input type="submit" name="SignUp" value="Sign Up">
 		</form>');
 }
@@ -75,7 +75,28 @@ function invitMsg(){
 			}
 			// tentative de Sign Up ?
 			if (isset($_POST['SignUp'])){
-				
+				$name = $_POST['name'];
+				$email = $_POST['email'];
+				$password1 = $_POST['password1'];
+				$password2 = $_POST['password2'];
+				// Vérifier que l'email est pas connu en DB
+				$req = $bdd->query("SELECT * FROM users WHERE email = '$email' ");
+				$sql_data= $req->fetchAll(PDO::FETCH_ASSOC);
+				if(isset($sql_data[0]['email'])){
+					$msg = "Email déjà utilisé. Veuillez utiliser un autre email ou vous connecter";
+					// Vérifier que les password sont identiques
+					if($password1 != $password2){
+						$msg = "Veuilez entrer deux password identiques.";
+					}
+				} else{ // Si c'est OK, faire l'insertion en DB
+					$req = $bdd->prepare("INSERT INTO users(nom, email, password) VALUES (?, ?, ?) ");
+					$req->execute(array($name, $email, $password1));
+					// Récupérer ensuite l'ID et pseudo pour enregistrement de session
+					$req = $bdd->query("SELECT * FROM users WHERE email = '$email' ");
+					$sql_data= $req->fetchAll(PDO::FETCH_ASSOC);
+					$_SESSION['userId'] = $sql_data[0]['idusers'];
+					$_SESSION['name'] = $sql_data[0]['nom'];
+				}
 			}
 			// Après LogIn ou SignUp, proposition envoi msg
 			if($msg != ''){
