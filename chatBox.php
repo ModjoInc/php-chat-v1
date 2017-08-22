@@ -88,15 +88,27 @@ function invitMsg(){
 					if($password1 != $password2){
 						$msg = "Veuilez entrer deux password identiques.";
 					}
-				} else{ // Si c'est OK, hasher le pwd et faire l'insertion en DB
-					$password = password_hash($password1, PASSWORD_DEFAULT);
-					$req = $bdd->prepare("INSERT INTO users(nom, email, password) VALUES (?, ?, ?) ");
-					$req->execute(array($name, $email, $password));
-					// Récupérer ensuite l'ID et pseudo pour enregistrement de session
-					$req = $bdd->query("SELECT * FROM users WHERE email = '$email' ");
-					$sql_data= $req->fetchAll(PDO::FETCH_ASSOC);
-					$_SESSION['userId'] = $sql_data[0]['idusers'];
-					$_SESSION['name'] = $sql_data[0]['nom'];
+				} else{ // Si c'est OK, sanitizer, valider hasher le pwd et faire l'insertion en DB
+					$name = filter_var($name, FILTER_SANITIZE_SPECIAL_CHARS);
+					if ($name){
+						$email = filter_var($email, FILTER_VALIDATE_EMAIL);
+						if ($email){
+							$password = password_hash($password1, PASSWORD_DEFAULT);
+							$req = $bdd->prepare("INSERT INTO users(nom, email, password) VALUES (?, ?, ?) ");
+							$req->execute(array($name, $email, $password));
+							// Récupérer ensuite l'ID et pseudo pour enregistrement de session
+							$req = $bdd->query("SELECT * FROM users WHERE email = '$email' ");
+							$sql_data= $req->fetchAll(PDO::FETCH_ASSOC);
+							$_SESSION['userId'] = $sql_data[0]['idusers'];
+							$_SESSION['name'] = $sql_data[0]['nom'];
+						} else{
+							$msg = "Veuillez entrer un email valide";
+						}
+						
+					}
+					else{
+						$msg = "Veuillez entrer un nom valide";
+					}					
 				}
 			}
 			// Après LogIn ou SignUp, proposition envoi msg
