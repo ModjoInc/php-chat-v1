@@ -18,13 +18,13 @@ $bdd = new PDO('mysql:host=localhost;dbname=chatPHP;charset=utf8', 'root', 'root
 	$length = count($sql_data);
 	for ($i=0; $i < $length-1; $i++) {	
 		echo('<p>');
-		echo('date : '.$sql_data[$i]['date'].'<br>');
-		echo($sql_data[$i]['nom'].' : '.$sql_data[$i]['content']);
+		echo('<span class="time">'.$sql_data[$i]['date'].'</span><br>');
+		echo('<span class="name">'.$sql_data[$i]['nom'].'</span> : '.$sql_data[$i]['content']);
 		echo('</p>');
 	}
 		echo('<p id="lastReceived">');
-		echo('date : '.$sql_data[$length-1]['date'].'<br>');
-		echo($sql_data[$i]['nom'].' : '.$sql_data[$length-1]['content']);
+		echo('<span class="time">'.$sql_data[$length-1]['date'].'</span><br>');
+		echo('<span class="name">'.$sql_data[$i]['nom'].'</span> : '.$sql_data[$length-1]['content']);
 		echo('</p>');
 
 ?>
@@ -33,7 +33,8 @@ $bdd = new PDO('mysql:host=localhost;dbname=chatPHP;charset=utf8', 'root', 'root
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-		<meta http-equiv="refresh" content="2">
+	<meta http-equiv="refresh" content="">				
+	<link rel="stylesheet" href="style.css">
 	<title>Document</title>
 </head>
 <body>
