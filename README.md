@@ -8,4 +8,4 @@
 ### Nouvelles compétences développées
 - DB relationnelles
 - iFrame
-- Déployement MySQL
+- Déploiement MySQL
