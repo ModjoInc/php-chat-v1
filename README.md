@@ -5,6 +5,6 @@
 [Résultat déployé](https://ddvdv.000webhostapp.com/php-chat-v1/)
 
 ### Nouvelles compétences développées
-DB relationnelles
-iFrame
-Déployement MySQL
+- DB relationnelles
+- iFrame
+- Déployement MySQL
