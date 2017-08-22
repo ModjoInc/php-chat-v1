@@ -1,5 +1,9 @@
 <?php
-$bdd = new PDO('mysql:host=localhost;dbname=chatPHP;charset=utf8', 'root', 'root');
+try{
+	$bdd = new PDO('mysql:host=localhost;dbname=id2658640_testandxp;charset=utf8', 'id2658640_useruser', 'useruser');
+} catch (Exception $e){
+	    echo('Erreur : ' . $e->getMessage());
+}
 
 	$req = $bdd->query('SELECT * FROM messages INNER JOIN users ON messages.users_idusers = users.idusers ORDER BY idmessages DESC');
 
@@ -33,7 +37,7 @@ $bdd = new PDO('mysql:host=localhost;dbname=chatPHP;charset=utf8', 'root', 'root
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<meta http-equiv="refresh" content="">				
+	<meta http-equiv="refresh" content="1">				
 	<link rel="stylesheet" href="style.css">
 	<title>Document</title>
 </head>

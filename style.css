@@ -5,3 +5,7 @@
 .name{
 	font-size: 1.2em;
 }
+
+iframe{
+	display: block;
+}

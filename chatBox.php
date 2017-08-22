@@ -31,7 +31,11 @@ function invitMsg(){
 
 
 // Connection à la DB
-	$bdd = new PDO('mysql:host=localhost;dbname=chatPHP;charset=utf8', 'root', 'root');
+try{
+	$bdd = new PDO('mysql:host=localhost;dbname=id2658640_testandxp;charset=utf8', 'id2658640_useruser', 'useruser');
+} catch (Exception $e){
+	    echo('Erreur : ' . $e->getMessage());
+}
 
 	if(isset($_POST['deconnect'])){
 			// unset($_SESSION['userId']);
