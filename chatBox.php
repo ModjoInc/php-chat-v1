@@ -1,5 +1,7 @@
 <?php	
 	session_start();
+
+
 // Fonction affichant l'HTML pour le Login ou Signup
 function invitLog(){
 				echo('Log in
@@ -18,6 +20,7 @@ function invitLog(){
 		</form>');
 }
 
+// Fonction affichant l'HTML pour l'envoi de msg
 function invitMsg(){
 	echo($_SESSION['name'].' dit:');
 	echo('<form method="post">
@@ -31,32 +34,36 @@ function invitMsg(){
 
 
 // Connection à la DB
-try{
-	$bdd = new PDO('mysql:host=localhost;dbname=chatPhp;charset=utf8', 'root', 'root');
-} catch (Exception $e){
-	    echo('Erreur : ' . $e->getMessage());
-}
+	try{
+		$bdd = new PDO('mysql:host=localhost;dbname=chatPhp;charset=utf8', 'root', 'root');
+	} catch (Exception $e){
+		    echo('Erreur : ' . $e->getMessage());
+	}
 
+// Si clic sur 'déconnect', destruction de la session
 	if(isset($_POST['deconnect'])){
-			// unset($_SESSION['userId']);
 			session_destroy();
 		}
-// Si un ID est connu en session, voir si msg à envoyer et sinon invit à entrer msg
-	if(isset($_SESSION['userId'])){
-		// Si déconnection demandée, détruire la Session
-		
+
+// Si un ID est connu en session,
+	if(isset($_SESSION['userId'])){		
 		// Si message posté, entrée du msg en DB
 		if(isset($_POST['message'])){
 			$userId = $_SESSION['userId'];
 			$message = $_POST['message'];
-			$req = $bdd->prepare("INSERT INTO messages(content, users_idusers) VALUES (?, ?) ");
+			// echo($userId);
+			// echo($message);
+			// return;
+			$req = $bdd->prepare("INSERT INTO messages (content, users_idusers) VALUES (? , ?) ");
 			$req->execute(array($message, $userId));
 		};
-		invitMsg();
+	// Dans tous les cas, proposer d'envoyer un msg en plus:
+	invitMsg();
 	}
 // Si pas d'ID connu en session, vérifier qu'il n'y a pas une tentative de login ou signup, à défaut affichage d'une fenêtre pour se connecter ou s'inscrire
 	else{
 		if (isset($_POST['LogIn']) OR isset($_POST['SignUp'])){
+			// Préparer la var pour réception msg d'erreur
 			$msg = '';
 			// tentative de Login ?
 			if (isset($_POST['LogIn'])){
@@ -74,7 +81,7 @@ try{
 						$msg = 'Mot de passe incorrect. Réessayer.';
 					}
 				} else{
-					$msg = 'Email inconnu. Veuillez vous ';	
+					$msg = 'Email inconnu. Veuillez créer un compte.';	
 				}
 			}
 			// tentative de Sign Up ?
@@ -115,14 +122,14 @@ try{
 					}					
 				}
 			}
-			// Après LogIn ou SignUp, proposition envoi msg
+			// Après LogIn ou SignUp si erreur affichage msg erreur
 			if($msg != ''){
-				echo($msg);
+				echo($msg . '<br>');
 				invitLog();
-			} else{
+			} else{ // Sinon invit envoi de msg
 				invitMsg();
 			}			
-		} else{ // Sinon, proposition de login ou signup
+		} else{ // Si rien en POST, proposition de login ou signup
 			invitLog();
 		}
 	}
