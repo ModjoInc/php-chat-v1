@@ -9,3 +9,7 @@
 iframe{
 	display: block;
 }
+
+input{
+	background: green;
+}
